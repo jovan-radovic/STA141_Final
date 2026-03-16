@@ -3,10 +3,10 @@ STA141 Final Project: Wildfire Visualization
 
 The final HTML render is provided as STA141_Final_Project_JovanRadovic.html. 
 
-The two additional datasets used in the creation of this project, ERA5 and PRISM, are too large to fit into the repository. Information on their retrieval is detailed below. 
+The two additional datasets used in the creation of this project, ERA5 and PRISM, are too large to fit into the repository. Information on their retrieval is detailed below. Additionally, the training for the CNN and XGBoost model used was done in an ipynb notebook, in order to utilize GPU more effectively (on colab). The correct way to handle these files and view modeling architecture is detailed below.
 
 ## Files:
-The rmd file final_project.rmd was knitted to produce the submitted html. The training of the models was done in a separate ipynb notebook, provided as training_colab.ipynb, in order to allow GPU access from colab. The ipynb notebook produced the model_results.rds file (stored in data/processed), which details the performance statistics of the models, across all validation years. If seeking to reproduce the render, first run the ipynb script, place the resulting rds in the appropriate directory, and then run the rmd file. 
+The rmd file final_project.rmd was knitted to produce the submitted html. The training of the models was done in a separate ipynb notebook, provided as training_colab.ipynb, in order to allow GPU access from colab. The ipynb notebook produced the model_results.rds file (stored in data/processed), which details the performance statistics of the models, across all validation years. If seeking to reproduce the render, first run the ipynb script, place the resulting rds in the appropriate directory, and then run the rmd file. If you wish to see details on implementaiton of the XGBoost and CNN, view training_colab.ipynb.
 
 ## Datasets:
 ### PRISM: 
