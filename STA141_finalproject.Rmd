@@ -1,0 +1,1794 @@
+---
+output: html_document
+---
+
+```{=html}
+<style>
+    /* Hides the default RMarkdown title to prevent duplicates */
+    #header { display: none; }
+    
+    /* Container styling */
+    .custom-title-container {
+        text-align: center;
+        background: #ffffff;
+        padding: 40px 30px;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        max-width: 800px;
+        margin: 40px auto;
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        
+        /* Animation setup */
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeSlideUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    /* Course Subheading */
+    .custom-course-text {
+        font-size: 1.1rem;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
+
+    /* Main Project Title */
+    .custom-main-title {
+        font-size: 2.2rem;
+        line-height: 1.3;
+        margin: 0 0 25px 0 !important;
+        background: linear-gradient(135deg, #d32f2f, #ff9800);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 800;
+        border-bottom: none !important;
+    }
+
+    /* Name block */
+    .custom-author-name {
+        font-size: 1.3rem;
+        color: #2b2b2b;
+        font-weight: 500;
+        margin-top: 10px;
+        padding-top: 20px;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    @keyframes fadeSlideUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Custom Section Headers */
+    h1.custom-section {
+        background-color: #f8f9fa;
+        padding: 16px 24px;
+        border-left: 6px solid #4a90e2; /* A nice professional blue accent */
+        border-radius: 6px;
+        font-size: 1.7rem;
+        font-weight: 700;
+        color: #2b2b2b;
+        margin-top: 50px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        border-bottom: none; /* Removes the default RMarkdown underline */
+    }
+    
+    .full-screen-gif {
+        width: 100vw;
+        position: relative;
+        left: 50%;
+        right: 50%;
+        margin-left: -50vw;
+        margin-right: -50vw;
+        background-color: #1a1a1a; /* Adds a sleek dark backdrop behind the GIF */
+        text-align: center;
+        padding: 20px 0; /* Gives it a little breathing room top and bottom */
+    }
+
+    .full-screen-gif img {
+        max-width: 100%;
+        max-height: 90vh; /* Ensures the GIF doesn't get taller than the user's monitor */
+        object-fit: contain;
+    }
+    
+    h2.custom-subsection {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #343a40;
+        margin-top: 35px;
+        margin-bottom: 20px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #e0e0e0;
+        position: relative;
+    }
+    
+    h2.custom-subsection::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 60px;
+        height: 2px;
+        background-color: #4a90e2;
+    }
+    
+    /* Custom Plot Caption Bubble */
+    .custom-caption-bubble {
+        max-width: 85%; /* Keeps the caption narrower than the plot for a nice framing effect */
+        margin: 15px auto 40px auto; 
+        background-color: #ffffff;
+        border: 1px solid #f0f0f0;
+        border-left: 5px solid #ff9800; /* Pulls from your title gradient */
+        border-radius: 8px;
+        padding: 16px 24px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        font-size: 0.95rem;
+        color: #4a4a4a;
+        line-height: 1.6;
+        text-align: left;
+        
+        /* Animation setup */
+        opacity: 0;
+        transform: translateY(15px);
+        animation: captionFadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        animation-delay: 0.5s; /* Delays slightly so the plot appears before the caption floats up */
+    }
+
+    /* Styles the "Figure 1:" prefix */
+    .custom-caption-bubble strong {
+        color: #d32f2f; /* Pulls the red from your title gradient */
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        margin-right: 5px;
+    }
+
+    @keyframes captionFadeIn {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Custom Sleek Table */
+    .custom-table-wrapper {
+        max-width: 600px;
+        margin: 40px auto; /* Centers the table with breathing room */
+        animation: fadeSlideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    .custom-table-caption {
+        text-align: center;
+        margin-bottom: 15px;
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        color: #555555;
+        line-height: 1.4;
+    }
+
+    .custom-table-caption strong {
+        color: #d32f2f; /* Red accent */
+        font-size: 1.1rem;
+    }
+
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #ffffff;
+        border-radius: 8px;
+        overflow: hidden; /* Keeps the rounded corners intact */
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        font-size: 1rem;
+    }
+
+    .custom-table thead tr {
+        background-color: #f8f9fa;
+        color: #2b2b2b;
+        text-align: left;
+        border-bottom: 3px solid #4a90e2; /* Blue accent */
+    }
+
+    .custom-table th, .custom-table td {
+        padding: 14px 20px;
+    }
+
+    .custom-table tbody tr {
+        border-bottom: 1px solid #eeeeee;
+    }
+
+    .custom-table tbody tr:nth-of-type(even) {
+        background-color: #fafbfc; /* Extremely subtle grey for alternating rows */
+    }
+
+    .custom-table tbody tr:last-of-type {
+        border-bottom: 3px solid #ff9800; /* Orange accent to close the table */
+    }
+    
+    /* Custom Collapsible Section */
+    .custom-collapse {
+        max-width: 800px;
+        margin: 20px auto;
+        background-color: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    .custom-collapse summary {
+        background-color: #f8f9fa;
+        color: #2c3e50;
+        font-size: 1.1rem;
+        font-weight: 700;
+        padding: 15px 20px;
+        cursor: pointer;
+        list-style: none; /* Hides the default ugly triangle in some browsers */
+        position: relative;
+        border-bottom: 2px solid transparent;
+        transition: background-color 0.2s ease;
+    }
+
+    /* Custom animated arrow */
+    .custom-collapse summary::after {
+        content: "▼";
+        position: absolute;
+        right: 20px;
+        color: #4a90e2;
+        font-size: 0.9rem;
+        transition: transform 0.3s ease;
+    }
+
+    .custom-collapse[open] summary {
+        border-bottom: 2px solid #4a90e2; /* Blue accent when open */
+        background-color: #f1f3f5;
+    }
+
+    .custom-collapse[open] summary::after {
+        transform: rotate(-180deg);
+    }
+
+    .custom-collapse-content {
+        padding: 25px;
+        background-color: #ffffff;
+    }
+</style>
+```
+
+::::: custom-title-container
+::: custom-course-text
+STA 141: Final Project
+:::
+
+<h1 class="custom-main-title">
+
+Spatiotemporal Wildfire Risk Prediction in the Contiguous United States: An Integrated Data Science Approach
+
+</h1>
+
+::: custom-author-name
+Jovan Radovic \| Professor Chen \| Github: https://github.com/jovan-radovic/STA141_Final/tree/main/
+:::
+:::::
+
+```{r echo=FALSE, warning=FALSE, message=FALSE }
+my_packages <- c(
+  "tidyverse", "sf", "terra", "prism", "maps", "RSQLite", 
+  "dbplyr", "zoo", "lwgeom", "ggtext", "exactextractr", 
+  "corrplot", "viridis", "kableExtra", "ggcorrplot", "factoextra", "gifski", "ragg", "transformr"
+)
+
+invisible(lapply(my_packages, library, character.only = TRUE))
+
+knitr::opts_chunk$set(
+  warning = FALSE, 
+  message = FALSE, 
+  echo = FALSE,
+  fig.align = 'center'
+)
+```
+
+<h1 class="custom-section">
+
+EXECUTIVE SUMMARY
+
+</h1>
+
+-   [**Use of FULL FPA FOD dataset, with 1.88 million records analyzed**]{style="color: blue;"}
+
+-   [**Addition of 30+ additional covariates indicating weather, climate, fuel, environmental, and topographic factors through inclusion of PRISM and ERA5 datasets**]{style="color: blue;"}
+
+-   [**Modern and strong HTML features/visuals, with foldable sections, transition animations, gifs included, and multi-panel displays**]{style="color: blue;"}
+
+-   [**Strong EDA analysis, with deep insights into cyclic nature of wildfires, on both yearly and multi-year level, with focus on VPD connection to vegetative fuel patterns, working from macro patterns to fine grained insights**]{style="color: blue;"}
+
+-   [**Use of three total models, with modern convolutional neural network deep learning approach with performance exceeding XGBoost model, complete with deeper result analysis (beyond AUC)**]{style="color: blue;"}
+
+-   [**Implementation of CNN techniques beyond those in lecture, using torch package in R in order to train custom CNN architecture and XGBoost models on GPU**]{style="color: blue;"}
+
+<h1 class="custom-section">
+
+Introduction
+
+</h1>
+
+Fires are a natural and important part of many ecosystems, but can nevertheless have significant and consequential impacts on human health, land, property, and the environment. This project aims to utilize historical data from a variety of sources containing environmental and weather factors to analyze and **proactively assess risk** for these destructive events. In this project, we will use the **Fire Program Analysis fire-occurrence database (FPA FOD)**, a large historical database of 1.88 million wildfire records in the United States, as the primary dataset to explore the **spatial and temporal patterns** of wildfire occurrence in the **contiguous United States**. This data will be combined with other environmental and weather datasets to better capture the conditions that drive wildfire risk. Ultimately, this project seeks to develop a **prediction model** capable of assessing **wildfire risk** in a given geographic area during a future month.
+
+The project will be structured in three main parts. The first section, **Data Acquisition and Preprocessing**, aims to gather the relevant **covariates** and additional datasets that, when paired with the FPA FOD, will allow for a more robust understanding of the conditions and factors that drive wildfire occurrence. The fire dataset will be reprocessed to fit into a **grid** of the United States, with each grid cell being **0.5 by 0.5 degrees**. The exact selection of additional datasets and covariates will be explained in detail in a later section, along with the motivations behind their selection, the process used to clean and format the dataset, and the methodology used to merge the disparate data sources into a single, cohesive dataframe. With a cleaned and formatted dataset, containing a wide variety of covariates, we will continue to an analysis of the composite dataset.
+
+The second section, **Exploratory Data Analysis**, will investigate the spatial, temporal, and historical trends of the fires in question. This section will emphasize the **visualization of relationships** between fire occurrences and the selected environmental, meteorological, and human factors of interest. A combination of statistical summaries in numerical form, information on the distribution of features, and the creation of visual plots, we aim to highlight the primary drivers of wildfires and address potential challenges in the data, such as **class imbalance** or **missing data**, which will be key considerations before any models are made.
+
+The final sections, **Modeling** and **Model Fitting and Validation**, will be the culmination of the data and analytical insights gained during the previous phases. Here, the focus will shift from an observation of historical trends to the developing and training of relevant statistical and machine learning algorithms to predict the dynamic relationship between the selected covariates and wildfire occurrence. While a perfect model is not the goal, we aim to create a model that can reasonably predict wildfire risk in a given geographic area for a given time period. We will train a **logistic regression** model as a baseline, and then explore more complex models such as an **XGBoost** model and a **neural network**, using the **AUC curve** as a benchmark for model performance, given the class imbalance present in the dataset.
+
+<h1 class="custom-section">
+
+SECTION I: Data Acquisition and Preprocessing
+
+</h1>
+
+The first step in the data acquisition and preprocessing stage is to load the primary dataset of interest, the FPA FOD. [The full FPA FOD will be used, which includes 1.88 million wildfire records]{style="color: blue;"}, which are filtered to include only the most significant fires. The intention behind the use of the full data instead of the partial dataset is to allow modeling to make use of more statistical patterns and trends, which would not be available in a limited model. According to authority sources on wildfire management in the United States, significant fires are often classified as **class 'E', 'F', or 'G'**, which indicate wildfires which spread beyond **300 acres**. However, the additional constraint was placed that fires must have a **duration of more than one-day**, as this will eliminate short-lived flash fires or prescribed burns that do not exhibit the sustained and complex behavior of standard wildfires. This threshold will be used to define **"notable fires"** for the rest of the project, and all fires below this threshold will be considered "non-notable" and discarded from the analysis.
+
+```{r}
+# Load primary datasource, all 1.88 million fires
+
+DB_PATH <- "data/raw/FPA_FOD_20170508.sqlite"
+
+fire_database <- dbConnect(RSQLite::SQLite(), DB_PATH)
+
+# filter notable fires with expanded column selection
+fires_raw <- tbl(fire_database, "Fires") %>%
+  # 1. Filter for size
+  filter(FIRE_SIZE >= 300) %>%
+  
+  # 2. Drop NA dates before doing date math
+  filter(!is.na(DISCOVERY_DATE) & !is.na(CONT_DATE)) %>%
+  
+  # 3. Filter for duration directly in the database to save RAM
+  filter((CONT_DATE - DISCOVERY_DATE) >= 1) %>%
+  
+  select(
+    # spatiotemporal
+    FIRE_YEAR, 
+    DISCOVERY_DATE, DISCOVERY_DOY, DISCOVERY_TIME,
+    
+    # size information
+    FIRE_SIZE, FIRE_SIZE_CLASS,
+    
+    # location info
+    LATITUDE, LONGITUDE, 
+    STATE, COUNTY, FIPS_NAME,
+    
+    # fire details
+    STAT_CAUSE_CODE, STAT_CAUSE_DESCR,
+    CONT_DATE, CONT_DOY, CONT_TIME
+  ) %>%
+  collect() %>%
+  mutate(
+    # convert Julian dates to more accessible formats
+    date = as.Date(DISCOVERY_DATE - 2415018.5, origin = "1899-12-31"),
+    cont_date_clean = as.Date(CONT_DATE - 2415018.5, origin = "1899-12-31"),
+    
+    # add duration of fire as data
+    duration_days = as.numeric(cont_date_clean - date)
+  )
+
+dbDisconnect(fire_database)
+
+non_conus <- c("AK", "HI", "PR", "GU", "AS", "VI", "MP")
+fires <- fires_raw %>%
+  filter(!STATE %in% non_conus, !is.na(LONGITUDE), !is.na(LATITUDE))
+```
+
+```{r class-balance, echo=FALSE}
+library(dplyr)
+library(knitr)
+
+data.frame(
+  Classification = c("Non-Notable / Filtered (0)", "Notable Fires (1)"),
+  Count = c(1880465 - nrow(fires), nrow(fires))
+) %>%
+  mutate(
+    Percentage = paste0(round((Count / 1880465) * 100, 2), "%"),
+    Count = format(Count, big.mark = ",")
+  ) %>%
+  kable(
+    col.names = c("Fire Classification", "Total Records", "Percentage"),
+    align = "lcc",
+    format = "html",
+    caption = "<strong style='color:#2c3e50; font-size:1.1em;'>Table: Target Class Balance</strong><br>Filtering for size and duration heavily reduces the dataset. Most fires are NOT notable, which creates a significant class imbalance challenge for modeling.",
+    table.attr = "class='custom-table'"
+  )
+```
+
+<hr>
+
+A primary consideration of great importance is how **geographic zones** will be defined for the purposes of data analysis and for future modeling. While information on the country and state level is available in the original dataset, making it simple and perhaps intuitive to aggregate fire risk by the **political boundaries** of state and counties, this project elects to instead overlay a **geometric grid** across the **contiguous United States**, forming grids that each account for a **0.5 degree by 0.5 degree area** by longitude and latitude, which is approximately 55km by 55km at the equator.
+
+The reasons for this decision are multipurposed. A significant advantage is that while counties and states differ much in shape and size, with some being orders of magnitude larger than others, a regular grid ensures that each spatial unit has an **identical surface area**, which provides a **standardized mathematical baseline** for further probability calculations. If counties were used instead, a large county with much surface area might register a higher risk simply because of the additional land it contains, not because its baseline risk is higher.
+
+Further, this decision allows for a more **seamless integration** across the chosen environmental and weather datasets. These datasets can be **aggregated more uniformly and precisely** over the fine-grained grids, rather than having to be aggregated to the irregular county and state markers. A final advantage is that the key covariates that determine fire behavior have no inherent connection with **human-drawn borders**. A grid system is **inherently neutral** and a framework that can capture local climates/features that would otherwise be distributed or 'split up' among or 'smoothed out' across more diverse counties.
+
+```{r warning = FALSE}
+# use flat 2d projection 
+sf_use_s2(FALSE)
+library(lwgeom)
+
+# get US boundary
+us_boundary <- st_as_sf(maps::map("usa", fill = TRUE, plot = FALSE)) %>%
+  st_make_valid() %>%
+  st_simplify(dTolerance = 0.01)
+
+#state boundaries
+us_states <- st_as_sf(maps::map("state", fill = TRUE, plot = FALSE)) %>%
+  st_make_valid() %>%
+  mutate(ID = str_to_title(ID))
+
+# creation of 0.5 degree by 0.5 degree grid, using sf package to create polygon grid
+grid_full <- st_make_grid(us_boundary, cellsize = c(0.5, 0.5), square = TRUE) %>%
+  st_as_sf() %>%
+  mutate(grid_id = row_number())
+
+# restrict to land areas
+grid_land <- st_filter(grid_full, us_boundary)
+
+# assign by centroid location
+grid_centers <- st_centroid(grid_land)
+coords <- st_coordinates(grid_centers)
+
+grid_attributes <- grid_land %>%
+  mutate(
+    lon = coords[, 1],
+    lat = coords[, 2]
+  )
+
+# assign state by intersection, taking state will largest overlap
+grid_states_inter <- st_intersection(grid_attributes, us_states) %>%
+  mutate(overlap_area = st_area(.)) %>%
+  st_drop_geometry() %>%
+  group_by(grid_id) %>%
+  arrange(desc(overlap_area)) %>%
+  slice(1) %>%
+  select(grid_id, state = ID)
+
+# merge back
+grid_land <- grid_land %>%
+  left_join(grid_attributes %>% st_drop_geometry() %>% select(grid_id, lat, lon), by = "grid_id") %>%
+  left_join(grid_states_inter, by = "grid_id")
+
+message("Total Grid Cells Generated: ", nrow(grid_land))
+```
+
+```{r warning=FALSE}
+# fires to fit st library, crs is unprojected (flat 2d), so use 4326
+fires_sf_object <- st_as_sf(fires, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
+
+# match coordinate
+fires_sf_object <- st_transform(fires_sf_object, crs = st_crs(grid_land))
+
+# join
+fires_gridded <- st_join(fires_sf_object, grid_land, join = st_intersects) %>%
+  filter(!is.na(grid_id))
+
+message("Fires successfully mapped to a grid cell: ", nrow(fires_gridded), " / ", nrow(fires))
+message("Dropped (offshore/border): ", nrow(fires) - nrow(fires_gridded))
+
+
+# now add fires to grid cells, on monthly level
+fires_monthly <- fires_gridded %>%
+  st_drop_geometry() %>%
+  mutate(month_date = floor_date(date, "month")) %>%
+  group_by(grid_id, month_date) %>%
+  summarise(
+    fire_occurred = 1,
+    n_fires = n(),
+    total_acres = sum(FIRE_SIZE, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# now fill in 0s for grid-month combos when they do not have any fires
+# first create full empty, then add in ones
+min_date <- floor_date(min(fires$date, na.rm=TRUE), "month")
+max_date <- floor_date(max(fires$date, na.rm=TRUE), "month")
+all_months <- seq(min_date, max_date, by = "month")
+
+# define grid
+base_features <- grid_land %>% st_drop_geometry() %>% select(grid_id, lat, lon, state)
+all_grids <- unique(base_features$grid_id)
+
+# emtpy df
+panel <- expand.grid(grid_id = all_grids, month_date = all_months) %>%
+  as_tibble()
+
+# add in base features
+panel <- panel %>%
+  left_join(base_features, by = "grid_id")
+
+# join
+panel <- panel %>%
+  left_join(fires_monthly, by = c("grid_id", "month_date")) %>%
+  mutate(
+    # keep, unless 0
+    fire_occurred = replace_na(fire_occurred, 0),
+    n_fires = replace_na(n_fires, 0),
+    total_acres = replace_na(total_acres, 0)
+  )
+```
+
+With the spatial grid setup complete, creating continuous grids for the contiguous United States, we will now seek to include **additional covariates** in our dataframe, beyond the information contained in the original fire dataset. In order to select the most relevant covariates, we will first review the literature on wildfire and their spread. According to the literature, the spread of wildfires can be influenced by a number of factors. Perhaps most importantly, **weather conditions** (precipitation, temperature & humidity), **fuel (vegetation) conditions**, and **topography** (steepness, solar exposure, and infrastructure) are the primary agents related to the spread of wildfires.
+
+As such, we will include additional datasets to capture these factors. For weather, we will use the **PRISM dataset** (maintained by the University of Oregon), which provides fine-grained historical weather data across the United States. For fuel conditions, vegetation, and topography information, we will use the massive **ERA5 climate reanalysis dataset** (produced by the **European Centre for Medium-Range Weather Forecasts**, or **ECMWF**). The ERA5 offers a comprehensive record of global atmospheric and land/surface variables since 1951. ERA5 offers a comprehensive, continuous record of global atmospheric and land-surface variables. By extracting variables such as **volumetric soil water** (as a proxy for fuel volatility), **leaf area index** or **vegetation cover** (to quantify available fuel density), and **surface geopotential** (to account for topographical elevation), we can aggregate a highly detailed landscape profile of a region for a particular month. The integration of these key covariates from PRISM and ERA5 into our standardized grid will allow for **deeper visualization** and a **more robust predictive model**. Their extraction and aggregation steps are detailed in the sections below.
+
+<h2 class="custom-subsection">
+
+Included Datasets:
+
+</h2>
+
+-   **FPA FOD**: The baseline dataset detailing key administrative details and locations for each file. This project utilizes the FULL FPA FOD, including all 1.88 million records.
+
+-   **PRISM**: Weather focused dataset with key information on precipitation, temperature, and VPD, able to be mapped onto and aggregated on the grid projection.
+
+-   **ERA5**: Comprehensive climate, topographical, and fuel condition dataset, with key variables such as soil moisture, leaf area index, and wind information, which can be mapped onto the grid projection.
+
+```{r}
+# process prism data (precipitation/temperature data)
+cache_path <- "data/processed/weather_cache_05deg.rds"
+
+if (file.exists(cache_path)) {
+  message("Loading pre-processed weather data from cache...")
+  weather_df <- readRDS(cache_path)
+} else {
+  library(exactextractr)
+
+extract_prism_var <- function(var_pattern, var_name_out, grid_sf) {
+  # prism has unique structure; all bil files appear in larger folder
+  files <- list.files("data/raw/prism", pattern = "\\.bil$", full.names = TRUE, recursive = TRUE)
+  files <- files[str_detect(basename(files), var_pattern)]
+  files <- files[!str_detect(files, "\\.aux")]
+
+  message("  Loading ", length(files), " files into a SpatRaster stack for ", var_name_out, "...")
+  r_stack <- rast(files)
+  grid_transformed <- st_transform(grid_sf, crs(r_stack))
+
+  message("  Extracting raster values across all months simultaneously...")
+  
+  # extract whole bil for processing
+  extracted_wide <- exact_extract(r_stack, grid_transformed, fun = 'mean', progress = TRUE)
+  
+  # add the grid_ids to the extracted data
+  extracted_wide$grid_id <- grid_transformed$grid_id
+  
+  # 
+  extracted_long <- extracted_wide %>%
+    pivot_longer(
+      cols = -grid_id, 
+      names_to = "layer_name", 
+      values_to = var_name_out
+    ) %>%
+    mutate(
+      # get time and map to grid
+      ym_str = str_extract(layer_name, "\\d{6}"),
+      month_date = ymd(paste0(ym_str, "01"))
+    ) %>%
+    select(grid_id, month_date, all_of(var_name_out)) %>%
+    filter(!is.na(month_date))
+  
+  return(extracted_long)
+}
+
+  # interested in precipitation, temperature, and vapor pressure deficit (VPD)
+  ppt_df   <- extract_prism_var("prism_ppt",    "ppt",   grid_land)
+  tmean_df <- extract_prism_var("prism_tmean",  "tmean", grid_land)
+  vpd_df   <- extract_prism_var("prism_vpdmax", "vpd",   grid_land)
+
+  # combine to final weather data df
+  weather_df <- ppt_df %>%
+    full_join(tmean_df, by = c("grid_id", "month_date")) %>%
+    full_join(vpd_df,   by = c("grid_id", "month_date"))
+  
+  # save to cache so easier to load in future (computationally intensive operation)
+  message("Saving extracted weather data to: ", cache_path)
+  dir.create(dirname(cache_path), showWarnings = FALSE, recursive = TRUE)
+  saveRDS(weather_df, cache_path)
+}
+
+# join to existing dataframe
+panel <- panel %>%
+  left_join(weather_df, by = c("grid_id", "month_date"))
+```
+
+```{r}
+options(max.print=100)
+
+# path to GRIB
+grib_path <- "/data/raw/era5/era5_land_monthly.grib"
+
+# define cached path
+cache_grib_result <- "data/processed/weather_cache_grib_monthly.rds"
+
+if (file.exists(cache_grib_result)) {
+  weather_processed <- readRDS(cache_grib_result)
+  
+  # get preprocessed and connect to original df, if already done
+  if (exists("panel")) {
+    if (!"grid_id" %in% names(weather_processed) || !"month_date" %in% names(weather_processed)) {
+    } else {
+       panel <- panel %>%
+         left_join(weather_processed, by = c("grid_id", "month_date"))
+    }
+  }
+    
+} else {
+  # use grid as template
+  grid_vect <- vect(grid_land %>% select(grid_id))
+  
+  # match original grid
+  r_template <- rast(ext(grid_vect), resolution = 0.5, crs = crs(grid_vect))
+  grid_rast <- rasterize(grid_vect, r_template, field = "grid_id")
+
+  # lod grib
+  r_src <- rast(grib_path)
+  n_layers <- nlyr(r_src)
+
+  # project grib and get variables of interest
+  CHUNK_SIZE <- 108  # 1 year of data (12 months * 9 vars)
+  var_template <- c(
+      "soil_temp_l1", "soil_water_l1", "soil_water_l2", "evaporation", 
+      "u_wind", "v_wind", "precip"
+  )
+  
+  # repeat for dates relevant in dataset
+  total_chunks <- ceiling(n_layers / CHUNK_SIZE)
+  results_list <- list()
+  start_date <- ymd("1992-01-01")
+  
+  for (i in 1:total_chunks) {
+      idx_start <- (i - 1) * CHUNK_SIZE + 1
+      idx_end   <- min(i * CHUNK_SIZE, n_layers)
+      
+      # read chunk
+      r_sub <- r_src[[idx_start:idx_end]]
+      
+      # sample to grid in right resolution
+      r_proj <- project(r_sub, grid_rast, method = "bilinear")
+      
+      # get stats for zone
+      z_chunk <- terra::zonal(r_proj, grid_rast, fun = "mean", na.rm = TRUE)
+      z_df <- as.data.frame(z_chunk)
+      
+      # metadata assignmetn (recommended to be done by University Corporation for Atmospheric Research)
+      chunk_indices <- idx_start:idx_end
+      rel_indices <- chunk_indices - 1
+      month_offsets <- rel_indices %/% 9
+      var_indices   <- rel_indices %% 9 + 1
+      
+      chunk_dates <- start_date %m+% months(month_offsets)
+      chunk_vars  <- var_template[var_indices]
+      
+      val_cols <- 2:ncol(z_df)
+      names(z_df)[val_cols] <- paste(chunk_dates, chunk_vars, sep = "||")
+      
+      z_clean <- z_df %>%
+        pivot_longer(
+            cols = -grid_id,
+            names_to = "meta",
+            values_to = "value"
+        ) %>%
+        separate(meta, into = c("month_date", "variable"), sep = "\\|\\|") %>%
+        mutate(month_date = as.Date(month_date)) %>%
+        pivot_wider(
+            names_from = variable,
+            values_from = value
+        )
+      
+      results_list[[i]] <- z_clean
+      
+      rm(r_sub, r_proj, z_chunk, z_df, z_clean)
+      gc()
+  }
+  
+  # save results
+  weather_processed <- bind_rows(results_list)
+  saveRDS(weather_processed, cache_grib_result)
+  rm(r_src, grid_rast, r_template, results_list)
+  gc()
+}
+
+# merge to existing
+if (exists("panel") && exists("weather_processed")) {
+    # Clean previous merge attempts if they exist
+    panel <- panel %>% select(-any_of(names(weather_processed)[!names(weather_processed) %in% c("grid_id", "month_date")]))
+    
+    panel <- panel %>%
+      left_join(weather_processed, by = c("grid_id", "month_date"))
+}
+```
+
+With a large number of **covariates** now included in the dataset, covering the critical factors of **weather, fuel conditions, and topography**, we move on to the **feature engineering** stage. In this stage, we will create a number of features that will allow us to capture the **temporal dynamics** inherent to wildfire risk, which will be passed down to future modeling stages. A number of important features are created. To capture the **seasonal and yearly dynamics** of wildfire risk, we add a **sine and cosine transformation** of the month variable, meaning that months that are close together have a similar representation. Further, we add in **lagged variables**, giving each row in a particular month a '**memory**' of relevant features in previous months, allowing future models to pick up on trends or momentum in the data. For example, we add in **lagged fire features** detailing the history of fires over the last **3-months and 12-months**, information on lagged **wind components, soil temperature, precipitation, water levels**, and more.
+
+<h2 class="custom-subsection">
+
+Key Data Challenges
+
+</h2>
+
+The data for both the ERA5 and PRISM dataset is created in grid sizes that do not perfectly match the created US grid. In order to handle this, the centroid of the respective grid in the US grid was assigned to a particular cell in the ERA5 and PRISM datasets. The value of the variable in the ERA5 and PRISM datasets was then assigned to the respective grid cell in the US grid, allowing for a merge between the data. This process is not perfect, as some of the ERA5 and PRISM grid cells do not align perfectly, meaning that a variable for a given US grid cell will be an approximation. However, this allows for seamless integration and still provides a reasonable estimate of conditions.
+
+
+```{r}
+message("Calculating lag and rolling features...")
+panel_final <- panel %>%
+  # sort by grid and date
+  arrange(grid_id, month_date) %>%
+  group_by(grid_id) %>%
+  mutate(
+    #  static
+    year = year(month_date),
+    month = month(month_date),
+    month_sin = sin(2 * pi * month / 12),
+    month_cos = cos(2 * pi * month / 12),
+    
+    # Fire history
+    fire_count_this_month = n_fires,
+    
+    # Rolling sums (Fire History)
+    rolling_fire_3m_inclusive = rollsum(n_fires, k = 3, fill = NA, align = "right"),
+    rolling_fire_count_3m = lag(rolling_fire_3m_inclusive, 1, default = 0),
+    
+    rolling_fire_12m_inclusive = rollsum(n_fires, k = 12, fill = NA, align = "right"),
+    rolling_fire_count_12m = lag(rolling_fire_12m_inclusive, 1, default = 0),
+    
+    # burned area
+    rolling_acres_3m_inclusive = rollsum(total_acres, k = 3, fill = NA, align = "right"),
+    rolling_mean_size_3m = lag(ifelse(rolling_fire_3m_inclusive > 0, rolling_acres_3m_inclusive / rolling_fire_3m_inclusive, 0), 1, default = 0),
+    
+    # PRISM weather variables
+    lag_ppt_1m    = lag(ppt, 1),
+    lag_ppt_2m    = lag(ppt, 2),
+    
+    lag_vpdmax_1m = lag(vpd, 1),
+    lag_vpdmax_2m = lag(vpd, 2),
+    
+    lag_tmean_1m  = lag(tmean, 1),
+    lag_tmean_2m  = lag(tmean, 2),
+    
+    # ERA5 environmental components, topographic, and fuel condition variables
+    lag_soil_temp_1m   = lag(soil_temp_l1, 1),
+    lag_soil_temp_2m   = lag(soil_temp_l1, 2),
+    
+    lag_soil_water_1m  = lag(soil_water_l1, 1), # Surface layer
+    lag_soil_water_2m  = lag(soil_water_l1, 2),
+    
+    lag_deep_water_1m  = lag(soil_water_l2, 1), # Deeper layer
+    lag_deep_water_2m  = lag(soil_water_l2, 2), 
+    
+    lag_evap_1m        = lag(evaporation, 1),
+    lag_evap_2m        = lag(evaporation, 2),
+    
+    lag_u_wind_1m      = lag(u_wind, 1),
+    lag_u_wind_2m      = lag(u_wind, 2), 
+    
+    lag_v_wind_1m      = lag(v_wind, 1),
+    lag_v_wind_2m      = lag(v_wind, 2), 
+    
+    lag_precip_grib_1m = lag(precip, 1), # Compare with PRISM ppt
+    lag_precip_grib_2m = lag(precip, 2),
+    
+    # outcome
+    any_notable_fire_next_month = lead(fire_occurred, 1)
+  ) %>%
+  ungroup() %>%
+  # Filter out rows where lags are NA (first 12 months) or lead is NA (last month)
+  filter(
+    !is.na(rolling_fire_count_12m),
+    !is.na(any_notable_fire_next_month)
+  )
+
+message("Feature Engineering Complete.")
+message("Final Dataset Size: ", nrow(panel_final))
+
+# save
+saveRDS(panel_final, "data/processed/final_dataset.rds")
+```
+
+[The finalized summary of the resulting dataset is displayed below, containing **40+ features**, which will be used in the later stages of the project. For each row in the dataset, these features are displayed, along with a **binary target variable** indicating whether a notable fire occurred in the grid cell in the following month.]{style="color: blue;"}
+
+<h2 class="custom-subsection">
+
+Finalized Dataset
+
+</h2>
+
+```{r}
+total_rows <- format(nrow(panel_final), big.mark = ",")
+total_cols <- ncol(panel_final)
+dataset_dimensions <- paste(total_rows, "Rows \u00D7", total_cols, "Columns")
+exact_years <- paste(min(panel_final$year, na.rm = TRUE), "to", max(panel_final$year, na.rm = TRUE))
+total_grids <- format(length(unique(panel_final$grid_id)), big.mark = ",")
+
+summary_table_df <- data.frame(
+  Category = c(
+    "Dataset Dimensions",
+    "Temporal Coverage (Exact Years)",
+    "Spatial Resolution",
+    "Spatial Extent",
+    "Target Variable",
+    "Administrative Predictors",
+    "Climate & Weather (PRISM)",
+    "Environmental & Surface (ERA5)",
+    "Spatiotemporal Memory",
+    "Lagged Variables"
+  ),
+  Description = c(
+    dataset_dimensions,
+    exact_years,
+    "0.5° × 0.5° Uniform Geographic Grid",
+    paste(total_grids, "Grid Cells spanning the Contiguous United States"),
+    "any_notable_fire_next_month (Binary Classification: 1/0)",
+    "State, County, Longitude, and Latitude Coordinates", 
+    "Precipitation, Mean Temp, Max VPD (+ 1 & 2-month lags)",
+    "Soil Moisture (L1/L2), Soil Temp, Evaporation, Wind Speed U/V (+ lags)",
+    "Rolling Fire Counts & Acres (3-mo, 12-mo), Cyclical Month (Sine/Cosine)",
+    "Lagged versions of all key predictors (1-3 month lag)"
+  )
+)
+
+library(kableExtra)
+
+summary_table_df %>%
+  kbl(
+    caption = "<b style='color:#1E212B; font-size:18px;'>Integrated Wildfire Dataset Architecture & Feature Space</b>",
+    col.names = c("Parameter", "Description"),
+    align = c("l", "l"),
+    escape = FALSE 
+  ) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"),
+    full_width = FALSE,
+    position = "center",
+    html_font = "Arial, Helvetica, sans-serif"
+  ) %>%
+  row_spec(0, bold = TRUE, color = "white", background = "#1E212B") %>% 
+  column_spec(1, bold = TRUE, color = "#2C3E50", width = "18em") %>%
+  column_spec(2, color = "#444444", width = "35em") %>%
+  pack_rows("Dataset Scope & Dimensions (Monthly, per grid, for years 1992-2015)", 1, 4, 
+            label_row_css = "background-color: #f0f2f5; color: #1E212B; border-bottom: 2px solid #FF9F1C; padding-top: 8px;") %>% 
+  pack_rows("Feature Space (Predictors & Target)", 5, 10, 
+            label_row_css = "background-color: #f0f2f5; color: #1E212B; border-bottom: 2px solid #FF9F1C; padding-top: 8px;")
+```
+
+<h1 class="custom-section">
+
+SECTION II: Exploratory Data Analysis
+
+</h1>
+
+With a robust dataset created, we move on to the **exploratory data analysis** phase. The goal of this phase is to thoroughly investigate the **spatial, temporal, and historical trends** of the constructed dataset, which will in turn yield important information of how to best continue through the modeling phase. We will begin by modeling the response variable, overall, over the entire dataset, to understand both its **distribution** and its **spatial qualities**.
+
+[We structure our analysis in the following way: beginning from a general overview of wildfire conditions on a **macro-spatial** scale, to the **inter-annual** evolution of wildfires, to finally understanding the **seasonal cycles** of wildfire patterns. Ultimately, we connect these cycles to **key** drivers of fires, including VPD and vegetative factors.]{style="color: blue;"}
+
+```{r fig.width=18, fig.height=8, out.width="100%"}
+us_states <- map_data("state")
+
+grid_summary <- panel_final %>%
+  group_by(grid_id, lat, lon) %>%
+  summarise(
+    total_fires = sum(n_fires, na.rm = TRUE),
+    prob_fire = mean(fire_occurred, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+p1 <- ggplot() +
+  geom_polygon(data = us_states, aes(x = long, y = lat, group = group), fill = "gray90", color = "white") +
+  geom_tile(data = grid_summary, aes(x = lon, y = lat, fill = total_fires), width = 0.55, height = 0.55) +
+  geom_polygon(data = us_states, aes(x = long, y = lat, group = group), fill = NA, color = "black", linewidth = 0.1) +
+  scale_fill_viridis_c(option = "magma", direction = -1, trans = "log1p", 
+                       name = "Total Fires (Log Scale)", na.value = "transparent",
+                       guide = guide_colorbar(title.position = "top", title.hjust = 0.5, barwidth = 20, barheight = 1.2)) +
+  coord_fixed(1.3, expand = FALSE, clip = "off") +
+  labs(title = "Spatial Distribution: Total Fire Counts",
+       subtitle = "Sum of fires per 0.5-degree grid cell") +
+  theme_void() +
+  theme(legend.position = "bottom", 
+        plot.title = element_text(face = "bold", size = 20, hjust = 0.5, margin = margin(t = 10, b = 5)),
+        plot.subtitle = element_text(size = 16, hjust = 0.5, margin = margin(b = 20)),
+        legend.title = element_text(size = 14, face = "bold"),
+        legend.text = element_text(size = 12),
+        plot.margin = margin(10, 10, 10, 10),
+        legend.box.margin = margin(t = 15, b = 10))
+
+p2 <- ggplot() +
+  geom_polygon(data = us_states, aes(x = long, y = lat, group = group), fill = "gray90", color = "white") +
+  geom_tile(data = grid_summary, aes(x = lon, y = lat, fill = prob_fire), width = 0.55, height = 0.55) +
+  geom_polygon(data = us_states, aes(x = long, y = lat, group = group), fill = NA, color = "black", linewidth = 0.1) +
+  scale_fill_viridis_c(option = "plasma", direction = -1, 
+                       name = "Probability (Monthly)", labels = scales::percent,
+                       guide = guide_colorbar(title.position = "top", title.hjust = 0.5, barwidth = 20, barheight = 1.2)) +
+  coord_fixed(1.3, expand = FALSE, clip = "off") +
+  labs(title = "Spatial Distribution: Fire Risk Probability",
+       subtitle = "Proportion of months with at least one notable fire") +
+  theme_void() +
+  theme(legend.position = "bottom", 
+        plot.title = element_text(face = "bold", size = 20, hjust = 0.5, margin = margin(t = 10, b = 5)),
+        plot.subtitle = element_text(size = 16, hjust = 0.5, margin = margin(b = 20)),
+        legend.title = element_text(size = 14, face = "bold"),
+        legend.text = element_text(size = 12),
+        plot.margin = margin(10, 10, 10, 10),
+        legend.box.margin = margin(t = 15, b = 10))
+
+library(patchwork)
+p1 | p2
+```
+
+::: custom-caption-bubble
+**Figure 1 Caption: General picture** *The maps above reveal the spatial distribution of wildfire activity across the contiguous United States. The left panel shows the the **total number of fires** (on a log scale), while the right shows the **overall probability** of a fire occurring in a particular grid cell in a given month, given the prior data.*
+:::
+
+This information already reveals advisable modeling decisions. For example, the skewed nature of the grid cells indicates that wildfire occurrences are highly **clustered** in specific geographic regions, and are not uniformly distributed. Clearly apparent is the **class imbalance**, as many grids record limited fires. To prevent a model from overfitting to the majority class/predictor of 'no notable fire', it is advisable to introduce strong penalties in the model for incorrect predictions of the minority class, and to metrics beyond AUC in evaluation.
+
+Static maps are unable to track the changing spatial distribution and nature of wildfires. The changing intensity of wildfire seasons are tracked in the plot below:
+
+```{r fire-animation, eval=FALSE, message=FALSE, warning=FALSE, dev='ragg_png', fig.width=12, fig.height=8, dpi=150}
+
+library(ggplot2)
+library(gganimate)
+library(dplyr)
+library(transformr)
+
+yearly_data <- panel_final %>%
+  group_by(year, grid_id, lat, lon) %>%
+  summarise(
+    total_fires = sum(n_fires, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  filter(total_fires > 0) 
+
+anim <- ggplot() +
+  geom_polygon(data = us_states, aes(x = long, y = lat, group = group), 
+               fill = "#F5F5F5", color = NA) +
+  
+  geom_raster(data = yearly_data, aes(x = lon, y = lat, fill = total_fires), 
+              interpolate = FALSE) +
+  
+  geom_polygon(data = us_states, aes(x = long, y = lat, group = group), 
+               fill = NA, color = "#A9A9A9", linewidth = 0.4, alpha = 0.8) +
+  
+  scale_fill_gradientn(
+    colors = c("#800000", "#D32F2F", "#FF8C00", "#FFD700", "#FFFF00"),
+    trans = "log1p",
+    name = "Fire\nIntensity\n(Log Scale)",
+    na.value = "transparent"
+  ) +
+  coord_fixed(1.3) +
+  
+  labs(
+    title = "Spatiotemporal Wildfire Distribution",
+    subtitle = "Year: {current_frame}",  
+    caption = "Insights: Severe wildfire activity is intensely concentrated in the Western US \n (notably California and the Pacific Northwest) with increasing frequency, \n while the Southeast exhibits widespread but lower-intensity, cyclical burn patterns."
+  ) +
+  
+  theme_void() +
+  theme(
+    # Pure white background for the entire plot
+    plot.background = element_rect(fill = "white", color = NA),
+    panel.background = element_rect(fill = "white", color = NA),
+    
+    text = element_text(color = "#333333"),
+    
+    plot.title = element_text(size = 26, face = "bold", hjust = 0.5, margin = margin(t = 25, b = 10), color = "#000000"),
+    plot.subtitle = element_text(size = 28, face = "bold", hjust = 0.5, margin = margin(b = 20), color = "#000000"),
+    
+    plot.caption = element_text(size = 13, color = "#333333", hjust = 0, margin = margin(t = 20, b = 15, l = 20), lineheight = 1.2),
+    
+    legend.position = "right",
+    legend.title = element_text(size = 14, face = "bold", color = "#000000", margin = margin(b = 10)),
+    legend.text = element_text(size = 12, color = "#333333"),
+    legend.key.height = unit(3.5, "cm"),
+    legend.key.width = unit(0.8, "cm"),
+    legend.background = element_rect(fill = "white", color = NA),
+    
+    plot.margin = margin(10, 20, 10, 20)
+  ) +
+  
+  transition_manual(year) 
+
+num_years <- length(unique(yearly_data$year))
+
+fire_gif <- animate(
+  anim, 
+  nframes = num_years,  
+  fps = 1.5,            
+  width = 1200, 
+  height = 850,         
+  res = 120, 
+  bg = 'white',         # having problems here???
+  renderer = gifski_renderer()
+)
+
+anim_save("fire_spread_history_upgraded.gif", animation = fire_gif)
+```
+
+::: full-screen-gif
+<img src="fire_spread_history_upgraded.gif" alt="Fire Spread History"/>
+:::
+
+::: custom-caption-bubble
+**Figure 2 Caption: Multi-year trends** *This animation demonstrates not just the stochastic variability of wildfires, but also the clear trends of weaker/stronger wildfire multi-year cycles. Not only do 'notable fires' become more frequent in later years, but fires undergo stronger or weaker yearly trends, which necessitate deeper analysis.*
+:::
+
+From the graph above, there appears to be high variability in the activity and distribution of wildfires on a yearly level. There are clear zones of intense wildfire interest, including the Western United States, and the Southeast. However, these notable fires seem to follow cyclic patterns. In each of the years plotted, there are certain areas that 'spike' in wildfire activity, but these areas are not consistent across years.
+
+Deeper insights can be gained from more in-depth plots, examining the exact climate attributes of the regions across the United States:
+
+```{r eda-weather-tabs, results='asis', warning=FALSE, message=FALSE, fig.width=16, fig.height=9}
+final_df <- panel_final
+
+fire_layer <- final_df %>%
+  group_by(grid_id, lat, lon) %>%
+  summarise(fire_intensity = log1p(sum(n_fires, na.rm = TRUE)), .groups = "drop") %>%
+  filter(fire_intensity > quantile(fire_intensity, 0.90, na.rm = TRUE))
+
+spatial_means <- final_df %>%
+  group_by(grid_id, lat, lon) %>%
+  summarise(
+    `Temperature`     = mean(tmean, na.rm = TRUE),
+    `VPD`             = mean(vpd, na.rm = TRUE),
+    `Precipitation`   = mean(ppt, na.rm = TRUE),
+    `Evaporation`     = mean(evaporation, na.rm = TRUE),
+    `Wind Speed`      = mean(sqrt(u_wind^2 + v_wind^2), na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  pivot_longer(
+    cols = -c(grid_id, lat, lon),
+    names_to = "Feature",
+    values_to = "Value"
+  )
+
+us_states <- map_data("state")
+features <- unique(spatial_means$Feature)
+
+cat("### Environmental Drivers: Multi Panel Visual{.tabset .tabset-fade .tabset-pills}\n\n")
+
+for (feat in features) {
+  
+  cat(sprintf("#### %s \n\n", feat))
+  
+  feat_data <- spatial_means %>% filter(Feature == feat)
+  
+  legend_label <- case_when(
+     feat == "Temperature" ~ "Avg Temp (C)",
+     feat == "VPD" ~ "VPD (kPa)",
+     feat == "Precipitation" ~ "Precip (mm)",
+     feat == "Evaporation" ~ "Evap (mm)",
+     feat == "Wind Speed" ~ "Wind (m/s)"
+  )
+  
+  p <- ggplot() +
+    geom_polygon(data = us_states, aes(x = long, y = lat, group = group),
+                 fill = "#f8f9fa", color = NA) +
+    
+    geom_raster(data = feat_data, aes(x = lon, y = lat, fill = Value), interpolate = FALSE) +
+    
+    geom_polygon(data = us_states, aes(x = long, y = lat, group = group),
+                 fill = NA, color = "white", linewidth = 0.4, alpha = 0.6) +
+    
+    geom_point(data = fire_layer, aes(x = lon, y = lat, size = fire_intensity), 
+               color = "#ff003c", alpha = 0.8, shape = 16) +
+    
+    scale_fill_viridis_c(option = "cividis", direction = -1, name = legend_label) +
+    scale_size_continuous(range = c(0.8, 3.5), guide = "none") + 
+    
+    coord_fixed(1.3) +
+    
+    labs(
+      title = paste0("Spatial Pattern: ", feat),
+      subtitle = paste0("Heatmap shows long-term average of ", feat, "."),
+      caption = "The red dots indicate regions of highest historical wildfire intensity (top 10%). Size reflects intensity."
+    ) +
+    
+    theme_void() +
+    theme(
+      text = element_text(family = "sans"),
+      plot.title = element_text(face = "bold", size = 22, hjust = 0.5, margin = margin(b = 10, t = 10), color = "#2c3e50"),
+      plot.subtitle = element_text(size = 16, hjust = 0.5, color = "#7f8c8d", margin = margin(b = 20)),
+      
+      plot.caption = element_text(size = 14, color = "#c0392b", face="bold", hjust = 0.5, margin = margin(t = 15)),
+      
+      legend.position = "right",
+      legend.title = element_text(size = 14, face = "bold"),
+      legend.text = element_text(size = 12),
+      legend.key.height = unit(2.5, "cm"),
+      
+      plot.background = element_rect(fill = "white", color = "gray90", linewidth = 1),
+      plot.margin = margin(20, 20, 20, 20)
+    )
+  
+  print(p)
+  cat("\n\n")
+}
+
+# weird issue with null printing out fixed by line below? investigat emake sure good
+
+cat("\n\n### {-}\n\n")
+```
+
+::: custom-caption-bubble
+**Figure 3 Caption: Risk vs Climate Profile** *The table above shows a map of US fire distribution over relevant climate predictors. Note that climate variables associated with areas of high wildfires (Southeast United States and West United States) hold different climate profiles, indicating multiple archetypes of fire climates.*
+:::
+
+Key **weather and environmental covariates** are detailed in the plot above, **normalized** to their **relative intensities** compared to the total corpus of data. The plots above clearly indicate relationships between the variables. For example, certain variables in the dataset, such as temperature and VPD, show strong signs of **multicollinearity** with each other, as they have similar **spatial patterns**. High multicollinearity in a model leads to a **less stable model**, if an **unregularized multiple linear regression** model is used. To address this, **non-linear models**, with **built-in regularization**, such as **xGBoost**, seem advisable.
+
+A deeper insight lies in when considering the connection between high density regions for each weather covariate, and comparing this region to the areas that hold higher fire risk. For example, the Southwestern United States holds high VPD, temperature, and low precipitation and is a region with a high fire risk. The Florida peninsula, however, is also a high fire region, but has a vastly different weather profile, with high winds, low evaporation, and low VPD. It seems reasonable to select models that are more adept at using **spatial indentifiers** like longitude or latitude as key predictors. [This indicates the presence of a number of 'weather archetypes', which can all contribute to fire patterns. The created model must differentiate between all of these archetypes, and recognize the different factors that limit/potentiate wildfires in each respective region.]{style="color: blue;"}
+<hr>
+
+```{r seasonal-analysis, warning=FALSE, message=FALSE, fig.width=16, fig.height=12}
+library(ggrepel)
+library(patchwork) # remember to add this after to installed packages, could be causing some issues, i think
+
+region_crosswalk <- data.frame(
+  state = state.name,
+  region = as.character(state.region)
+)
+
+season_regional <- panel_final %>%
+  left_join(region_crosswalk, by = "state") %>%
+  filter(!is.na(region)) %>%
+  mutate(
+    month_label = factor(month.abb[month], levels = month.abb)
+  ) %>%
+  group_by(month_label, region) %>%
+  summarise(
+    total_fires = sum(n_fires, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+p_linear <- ggplot(season_regional, aes(x = month_label, y = total_fires, fill = region)) +
+  geom_col(position = "stack", width = 0.7, alpha = 0.9) +
+  scale_fill_viridis_d(option = "turbo", name = "Region") +
+  labs(title = "A. National Fires by Month",
+       subtitle = "Aggregate fire counts by month reveal a sharp\nunimodal peak in late summer. More interesting\nis the differing 'seasons' of wildfires.",
+       x = "Month", y = "Total Notable Fires") +
+  theme_minimal(base_family = "sans") +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(face = "bold", size = 16),
+    axis.text.x = element_text(face = "bold")
+  )
+
+p_rose_stacked <- ggplot(season_regional, aes(x = month_label, y = total_fires, fill = region)) +
+  geom_col(width = 0.95, color = "white", linewidth = 0.3, position = "stack", alpha = 0.9) +
+  coord_polar(start = -0.26) + 
+  scale_fill_viridis_d(option = "turbo", name = "Geographic Region") +
+  labs(title = "B. The Regional Fingerprint",
+       subtitle = "Stacked petals reveal distinct regional fire seasons.\nSouth peaks in Spring; West peaks in Summer.",
+       x = NULL, y = NULL) +
+  theme_minimal(base_family = "sans") +
+  theme(
+    axis.text.y = element_blank(),
+    axis.text.x = element_text(face = "bold", size = 12, color = "#2C3E50"),
+    panel.grid.major = element_line(color = "gray90", linetype = "dashed"),
+    legend.position = "bottom",
+    legend.title = element_text(face = "bold", size = 12),
+    plot.title = element_text(face = "bold", size = 18, hjust = 0.5),
+    plot.subtitle = element_text(hjust = 0.5),
+    aspect.ratio = 1, 
+    plot.margin = margin(0, 0, 0, 0) 
+  )
+
+# try to do the Professor chen recommended one after
+layout <- "
+AAABBBB
+AAABBBB
+"
+
+p_linear + p_rose_stacked + plot_layout(design = layout)
+```
+
+::: custom-caption-bubble
+**Figure 4 Caption: Cyclical patterns** *Left: Total fire counts reveal intense clustering in the West and Southeast. Probability maps from earlier show that while the West has high-intensity events, the Southeast has a higher frequency of conditions that permit wildfires. This suggests a key insight: differing 'weather-archetypes' of fire: a 'fuel-constrained' in the West and 'climate-constrained' in the Southeast).*
+:::
+
+**Key Insights:** 1. **Temporal Intensification:** There is a clear upward trend in the number of notable fires from 1992 to 2015, distinct from simple variance. 2. **Seasonal Locking:** Fire risk is highly seasonal, peaking sharply in July and August. Models must heavily weigh `month_sin`/`month_cos` or monthly lags to capture this. 3. **Spatial Expansion:** Comparing the 1992-1996 block to 2011-2015, we observe not just an intensification of existing hotbeds (California, Southeast), but an expansion of fire activity into previously quieter zones.
+
+```{r hysteresis-fuel, warning=FALSE, message=FALSE, fig.width=14, fig.height=8}
+library(ggrepel)
+
+hysteresis_data <- panel_final %>%
+  group_by(month) %>%
+  summarise(
+    mean_vpd = mean(vpd, na.rm = TRUE),
+    total_acres = sum(total_acres, na.rm = TRUE),
+    n_fires = sum(n_fires, na.rm = TRUE)
+  ) %>%
+  mutate(
+    month_label = factor(month.abb[month], levels = month.abb)
+  )
+
+ggplot(hysteresis_data, aes(x = mean_vpd, y = total_acres)) +
+  geom_path(arrow = arrow(length = unit(0.5, "cm"), type = "closed"), 
+            color = "gray70", linewidth = 1.5, linetype = "solid", lineend = "round") +
+  geom_point(aes(size = n_fires), fill = "#E74C3C", shape = 21, color = "white", stroke = 2) +
+  geom_text_repel(aes(label = month_label), 
+                  fontface = "bold", size = 5, family = "sans", color = "#2C3E50",
+                  box.padding = 0.6) +
+  scale_y_log10(expand = expansion(mult = c(0.1, 0.2))) + 
+  scale_x_continuous(expand = expansion(mult = c(0.1, 0.1))) +
+  scale_size_continuous(range = c(6, 18), name = "Total Fire Frequency", labels = scales::comma) +
+  labs(title = "The Wildfire Loop",
+       subtitle = "Trajectory of the fire year in Climate-Fire Phase Space.",
+       x = "Mean VPD (Vapor Pressure Deficit - Atmospheric Thirst)", 
+       y = "Total Acres Burned (Log Scale)") +
+  theme_minimal(base_family = "sans") +
+  theme(
+    plot.title = element_text(face = "bold", size = 20, hjust = 0.5),
+    plot.subtitle = element_text(hjust = 0.5, size = 14, color = "gray40"),
+    legend.position = "bottom"
+  )
+
+# make sure hysteris makes sesne
+```
+
+::: custom-caption-bubble
+**Figure 5 Caption: The Hysteresis of Fuel Memory.** *The "loop" shape is critical: for the exact same atmospheric temperature/VPD (x-axis), fire risk (y-axis) is significantly higher in Autumn than in Spring. We can infer that the landscape and vegetation holds a kind of 'memory', referred to as hysteresis in wildfire literature, which indicates that landscape and vegetation requires multiple months of drying, and non-fires to create flammable conditions.*
+:::
+The table above reveals another pattern: for the same degree of a relevant climate variable, such as VPD, the accompanying fire risk can **vary drastically**. For example, the mean VPD for April is very similar to October, but fire risk is drastically higher in April. This indicates that the landscape and vegetation, which are linked to VPD (as this measures their dryness), have a memory of their conditions, and that climate variables alone cannot explain fire risk. This makes it clear that including lagging variables in the dataset is critical, as they can capture this 'memory' effect. Contemporary literature refers to this process as **'hysteresis'**, and it is critically important to wildfire risk.
+
+<hr>
+
+```{r eda-modeling-plots, fig.width=16, fig.height=8, out.width="100%", dpi=300, warning=FALSE, message=FALSE}
+corr_vars <- panel_final %>%
+  select(tmean, vpd, ppt, soil_temp_l1, soil_water_l1, evaporation) %>%
+  rename(
+    `Mean Temp` = tmean,
+    `Max VPD` = vpd,
+    `Precip` = ppt,
+    `Soil Temp` = soil_temp_l1,
+    `Soil Moisture` = soil_water_l1,
+    `Evaporation` = evaporation
+  ) %>%
+  na.omit()
+
+ggcorrplot(
+  cor(corr_vars), 
+  method = "square", 
+  type = "lower",          
+  lab = TRUE,              
+  lab_size = 5,            
+  colors = c("#2980B9", "white", "#C0392B"), 
+  outline.color = "white",
+  ggtheme = ggplot2::theme_minimal(base_size = 16, base_family = "sans")
+) + 
+  labs(title = "Predictor Multicollinearity Matrix") +
+  theme(
+    plot.title = element_text(face = "bold", size = 20, color = "#1a1a1a", margin = margin(b = 20)),
+    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1, face = "bold", color = "black"),
+    axis.text.y = element_text(face = "bold", color = "black"),
+    legend.title = element_text(face = "bold", size = 12),
+    legend.key.height = unit(2.5, "cm")
+  )
+```
+
+::: custom-caption-bubble
+**Figure 6 Caption:** *The high degree of class imbalance will inform modeling decisions in the future. Multicollinearity can also be quantitatively expressed, through the correlation matrix. *
+:::
+
+This plot reveals a more **quantitative assessment** of the class imbalance and multicollinearity noted in the earlier descriptive maps. The left panel demonstrates an overwhelming presence of no notable fires in a given month, meaning that AUC curves will be most advisable for evaluation. The right panel, which reveals high **multicollinearity**, may mean that a benchmark logistic regression model would show instability and high variance in its coefficients, and that a more regularized model, such as xGBoost, would be stronger.
+
+[Driven by these insights from the Explanatory Data Analysis phase, we move onto the Modeling phase.]{style="color: blue;"}
+
+<h1 class="custom-section">
+
+SECTION III: Modeling
+
+</h1>
+
+In this section, we seek to build a **predictive model of wildfire risk**, using the constructed dataset. The objective is to use our modeling ready dataset, which includes relevant **predictors** for a given month (both current and lagged) and a **target binary variable** indicating whether a notable fire occurs in the following month, to train a model to predict wildfire risk. Our primary goal is **predictive performance**, with a lesser emphasis on understanding the specific relationships between predictors and the target variable. The XGBoost and CNN model were both trained using the **torch** library, which allows for GPU access and custom architecture creation more easily.
+
+[Technical details behind each model are provided in the **subtables** below. The logistic regression equation was too large to display on the main text, given the number of predictors, but an abridged version of the equation is provided in the subtable]{style="color: blue;"}
+
+We consider three models:
+
+<hr class="custom-subsection">
+1. Logistic Regression (baseline model)
+</hr>
+The first is a **baseline logistic regression model**, which is used for **binary classification**.
+
+-   **Mechanism**: Such a model calculates the probability that an event (such as a notable fire) occurs by fitting a **linear decision boundary** through the feature space, using a sigmoid to map input values to a probability between 0 and 1.
+-   **Advantage**: GLMs are generally **easily interpreted**, **computationally light**, and will provide a solid **benchmark**, to see the benefits of more advanced machine learning techniques.
+-   **Key Modeling Decisions/Specifications**: A baseline approach using the standard binomial family, with no added regularization or tuning, aimed at providing a clear benchmark for future models.
+
+<details class="simple-collapse">
+  <summary>View Logistic Regression Model Details</summary>
+  <div class="simple-collapse-content">
+
+The probability of a notable fire occurring, $P(\text{Fire}=1)$, is modeled using the logistic function:
+
+$$P(\text{Fire}=1) = \frac{1}{1 + e^{-z}}$$
+
+Where the log-odds ($z$) is defined as:
+
+$$z = 27.1795 + 234.5662(\text{evaporation}) - 145.1641(\text{precip_2m}) - 86.7490(\text{precip}) - 86.6312(\text{lag_2m}) - 45.6072(\text{lag_1m})$$
+
+<br>
+
+```{r log-reg-table, echo=FALSE}
+coef_data <- data.frame(
+  Feature = c("Intercept", 
+              "Evaporation", 
+              "Precipitation (2-Month Lag)", 
+              "Precipitation", 
+              "Evaporation (2-Month Lag)", 
+              "Precipitation (1-Month Lag)"),
+  Variable = c("Intercept", 
+               "evaporation", 
+               "lag_precip_grib_2m", 
+               "precip", 
+               "lag_evap_2m", 
+               "lag_precip_grib_1m"),
+  Coefficient = c(27.1795, 234.5662, -145.1641, -86.7490, -86.6312, -45.6072)
+)
+
+coef_summary <- coef_data %>%
+  mutate(
+    Coefficient = sprintf("%.4f", Coefficient),
+    Impact = ifelse(as.numeric(Coefficient) > 0, "+ Increases Risk", "- Decreases Risk")
+  ) %>%
+  select(
+    `Feature Description` = Feature, 
+    `Model Variable` = Variable, 
+    `Log-Odds` = Coefficient, 
+    `Impact Direction` = Impact
+  )
+
+knitr::kable(coef_summary, 
+             align = "llcl", 
+             format = "html", 
+             table.attr = "class='custom-table'")
+```
+
+  </div>
+</details>
+
+<hr class="custom-subsection">
+2. XGBoost
+</hr>
+
+The second model considered is an **XGBoost model**, which is an **ensemble machine learning approach** that is built on **decision trees**.
+
+-   **Mechanism**: Such a model builds numerous decision trees, trees that make a final binary classification based on sequences of splits in the predictor variables, which are then aggregated for a final prediction.
+-   **Advantage**: XGBoost can capture **non-linear interactions**, are robust to **multicollinearity** concerns, which were addressed above, and have built in parameters to address **class imbalance**, which is paramount to our dataset.
+-   **Key Modeling Decisions/Specifications**: Training is capped at 300 trees, with early stopping if there are no improvements after 20 trees. The maximum depth of the tree is set to 6, to prevent over fitting. Regularization is achieved by sampling only 80% of the data rows, and 80% of the features.
+
+<details class="simple-collapse">
+  <summary>View XGBoost Model Details</summary>
+  <div class="simple-collapse-content">
+
+Unlike Logistic Regression, XGBoost utilizes an ensemble of gradient-boosted decision trees. The model was heavily regularized to prevent overfitting on the majority class and accelerated using GPU computation.
+
+<br>
+
+```{r xgb-table, echo=FALSE}
+xgb_data <- data.frame(
+  Component = c("Objective Function", 
+                "Tree Method", 
+                "Learning Rate (eta)", 
+                "Max Tree Depth", 
+                "Row Subsampling", 
+                "Column Subsampling",
+                "Class Imbalance Weight",
+                "Early Stopping"),
+  Value = c("binary:logistic", 
+            "hist (CUDA / GPU)", 
+            "0.05", 
+            "6", 
+            "0.8 (80% of data per tree)", 
+            "0.8 (80% of features per tree)",
+            "Dynamic (Negative / Positive count)",
+            "30 Rounds (Monitored via PR-AUC)")
+)
+
+knitr::kable(xgb_data, 
+             col.names = c("Hyperparameter", "Configured Value"),
+             align = "ll", 
+             format = "html", 
+             table.attr = "class='custom-table'")
+```
+
+  </div>
+</details>
+
+<hr class="custom-subsection">
+3. Convolutional Neural Network
+</hr>
+
+The final model considered is a **convolutional neural network**, which is fed all features as input.
+
+-   **Mechanism**: CNNs model inputs through multiple layers of **interconnected neurons**, using **non-linear activation functions** to learn complex relationships among the inputs. CNNs in particular use convolutional layers, which are designed to capture local patterns in data. In our case, the convolutional layers capture local interactions between features, using a space of grids on the map to capture spatial relations.
+-   **Advantage**: Such models have become the **state-of-the-art** in many predictive task. Such an approach has the ability to find strong predictive relationships across the many features in our dataset and serves as a robust approach. They also utilize a larger data space, as they can be fed larger grids, which including surrounding inputs.
+-   **Key Modeling Decisions/Specifications**: Features are standardized before being inputted into the model to increase robustness and prevent certain features from dominating the learning process. There are a total of 3 hidden layers, with batch normalization, dropout, and the ReLU activation function between. The first layer has 128 neurons, while the second has 64, and the final has 32. The output layer is a single neuron that indicates the probability of a fire in the next month. The model is trained against the BCE loss of the logits against the true label of that piece of data. Larger networks were considered, but were not used due to training computation limitations.
+
+<details class="simple-collapse">
+  <summary>View Convolutional Neural Network (Torch) Details</summary>
+  <div class="simple-collapse-content">
+
+The deep learning model is a Multilayer Perceptron (MLP) built using the `torch` framework. It utilizes Batch Normalization and Dropout for regularization, and computes loss using Logits for numerical stability.
+
+<br>
+
+```{r nn-table, echo=FALSE}
+nn_data <- data.frame(
+  Layer = c("Input Preprocessing", 
+            "Hidden Layer 1", 
+            "Hidden Layer 2", 
+            "Hidden Layer 3", 
+            "Output Layer",
+            "Loss Function",
+            "Optimizer"),
+  Details = c("Centering, Scaling, Near-Zero Variance Removal", 
+              "Linear(128) -> BatchNorm1D -> ReLU -> Dropout(0.3)", 
+              "Linear(64) -> BatchNorm1D -> ReLU -> Dropout(0.3)", 
+              "Linear(32) -> ReLU", 
+              "Linear(1) (No Sigmoid)",
+              "BCEWithLogitsLoss (Positively Weighted)",
+              "Adam (lr = 0.001, Batch Size = 4096)")
+)
+
+knitr::kable(nn_data, 
+             col.names = c("Network Architecture / Component", "Configuration Details"),
+             align = "ll", 
+             format = "html", 
+             table.attr = "class='custom-table'")
+```
+
+  </div>
+</details>
+
+<hr>
+
+A model of the finalized CNN architecture is shown below:
+
+```{r wildfire-cnn, echo=FALSE, message=FALSE, warning=FALSE}
+library(DiagrammeR)
+library(DiagrammeRsvg)
+library(rsvg)
+library(htmltools)
+library(base64enc)
+
+diagram <- grViz("
+digraph CNN {
+  graph [rankdir=LR, bgcolor=white, fontname='Helvetica']
+  node  [fontname='Helvetica', fontsize=11, style=filled, shape=box, margin='0.2,0.1']
+  edge  [color='#888888', arrowsize=0.7]
+
+  A [label='Input Tensor\nB x C x 32 x 64', shape=oval,  fillcolor='#dceefb', color='#2980b9', fontcolor='#1a3a4a']
+
+  B [label='Conv2D 3x3\nPad 1',             fillcolor='#fff4e0', color='#e67e22', fontcolor='#4a2800']
+  C [label='Batch Norm',                     fillcolor='#e8f8e8', color='#27ae60', fontcolor='#1a4a1a']
+  D [label='ReLU',                           fillcolor='#f5e6ff', color='#7d3c98', fontcolor='#3b1a5a']
+
+  E [label='Conv2D 3x3\nDilation 2',        fillcolor='#fff4e0', color='#e67e22', fontcolor='#4a2800']
+  F [label='Batch Norm',                     fillcolor='#e8f8e8', color='#27ae60', fontcolor='#1a4a1a']
+  G [label='ReLU',                           fillcolor='#f5e6ff', color='#7d3c98', fontcolor='#3b1a5a']
+  H [label='Dropout 0.3',                    fillcolor='#e8f8e8', color='#27ae60', fontcolor='#1a4a1a']
+
+  I [label='Conv2D 3x3\nPad 1',             fillcolor='#fff4e0', color='#e67e22', fontcolor='#4a2800']
+  J [label='Batch Norm',                     fillcolor='#e8f8e8', color='#27ae60', fontcolor='#1a4a1a']
+  K [label='ReLU',                           fillcolor='#f5e6ff', color='#7d3c98', fontcolor='#3b1a5a']
+
+  L [label='Conv2D 1x1',                     fillcolor='#fde8e8', color='#c0392b', fontcolor='#4a1010']
+  M [label='Sigmoid',       shape=oval,      fillcolor='#f5e6ff', color='#7d3c98', fontcolor='#3b1a5a']
+  N [label='Probability Map\nB x 1 x 32 x 64', shape=oval, fillcolor='#fde8e8', color='#c0392b', fontcolor='#4a1010']
+
+  A->B->C->D->E->F->G->H->I->J->K->L->M->N
+
+  subgraph cluster_1 {
+    label='Block 1 — Local Features'
+    fontsize=10; fontcolor='#555555'
+    style=dashed; color='#cccccc'
+    B; C; D
+  }
+  subgraph cluster_2 {
+    label='Block 2 — Expanded Context'
+    fontsize=10; fontcolor='#555555'
+    style=dashed; color='#cccccc'
+    E; F; G; H
+  }
+  subgraph cluster_3 {
+    label='Block 3 — Refinement'
+    fontsize=10; fontcolor='#555555'
+    style=dashed; color='#cccccc'
+    I; J; K
+  }
+}
+")
+
+svg_str <- export_svg(diagram)
+png_raw <- rsvg::rsvg_png(charToRaw(svg_str), width = 1400)
+img_b64 <- base64enc::base64encode(png_raw)
+img_src <- paste0("data:image/png;base64,", img_b64)
+
+browsable(
+  tagList(
+    tags$div(
+      style = "font-family: sans-serif; margin: 20px 0;",
+
+      tags$h3(
+        HTML("Wildfire CNN: Spatiotemporal Context Awareness"),
+        style = "color: #c0392b; font-size: 1.2em; margin-bottom: 6px;"
+      ),
+      tags$button(
+        id = "toggleBtn",
+        HTML("&#9660; Show Architecture"),
+        style = paste(
+          "background-color: #c0392b;",
+          "color: white;",
+          "border: none;",
+          "padding: 8px 18px;",
+          "border-radius: 6px;",
+          "cursor: pointer;",
+          "font-size: 0.88em;",
+          "font-weight: bold;"
+        ),
+        onclick = "
+          var d   = document.getElementById('cnnDiagram');
+          var btn = document.getElementById('toggleBtn');
+          if (d.style.display === 'none') {
+            d.style.display = 'block';
+            btn.innerHTML   = '&#9650; Hide Architecture';
+          } else {
+            d.style.display = 'none';
+            btn.innerHTML   = '&#9660; Show Architecture';
+          }
+        "
+      ),
+
+      tags$div(
+        id    = "cnnDiagram",
+        style = "display: none; margin-top: 16px;",
+        tags$img(
+          src   = img_src,
+          style = "max-width: 100%; border-radius: 8px; border: 1px solid #ddd;"
+        ),
+        tags$p(
+          "Figure: Custom CNN designed to capture localized spatial dependencies.",
+          style = "font-style: italic; color: #888; font-size: 0.82em; margin-top: 8px;"
+        )
+      )
+    )
+  )
+)
+```
+
+<h1 class="custom-section">
+
+SECTION IV: Model Fitting and Validation
+
+</h1>
+
+The following validation approach was used to respect the temporal structure of the data, while also providing the most possible data to the model:
+
+Instead of a traditional split, the model uses a time-series aware validation loop:
+
+-   **Temporal Splitting**: The model is trained using an expanding window of past historical wildfire and feature data, starting from the year 1995, and tested on the immediately following year.
+
+-   **No Leakage**: The test set for each iteration is strictly beyond the scope of the training data, ensuring that no bias is introduced from future information.
+
+-   **Dynamic Folds**: This process continues across many folds, from 1995-2015, the end of the wildfire dataset.
+
+The CNN is trained in a different way: due to the architectural differences, the CNN was trained by using the first 80% of data as training data, and the final 20% of months as the test set. This is because the CNN is fed larger grids of data, which include surrounding months and spatial points, and thus the expanding window approach is not as feasible. However, the CNN still respects temporal structure, as the test set is strictly after the training set.
+
+Due to the high computational cost of training the XGBoost and CNN models, they were trained separately, using an R script in a Google Colab environment, thereby providing access to GPU. The results of the analysis are shown below:
+
+```{r model-trajectory, fig.width=18, fig.height=9, out.width="100%", dpi=300, warning=FALSE, message=FALSE}
+
+adf <- readRDS("data/processed/model_results.rds")
+
+plot_data <- adf %>%
+  pivot_longer(
+    cols = starts_with("auc_"),
+    names_to = "model",
+    values_to = "auc"
+  ) %>%
+  mutate(model_label = case_when(
+    model == "auc_glm" ~ "GLM (Baseline)",
+    model == "auc_xgb" ~ "XGBoost (GPU)",
+    model == "auc_cnn"  ~ "Convolutional Neural Network"
+  ))
+
+avg_data <- plot_data %>%
+  group_by(model_label) %>%
+  summarise(mean_auc = mean(auc, na.rm = TRUE), .groups = "drop")
+
+end_points <- plot_data %>%
+  filter(year == max(year)) %>%
+  left_join(avg_data, by = "model_label") %>%
+  mutate(label_text = sprintf("%s\n(Avg: %.3f)", model_label, mean_auc))
+
+p_auc <- ggplot() +
+  
+  geom_hline(yintercept = seq(0.70, 0.95, by = 0.05), color = "#E8EAEF", linewidth = 0.8) +
+  geom_hline(yintercept = 0.70, color = "#2C3E50", linewidth = 1) +
+  
+  geom_hline(data = avg_data, 
+             aes(yintercept = mean_auc, color = model_label, linetype = "Overall Average"), 
+             linewidth = 1.2, alpha = 0.7) +
+  
+  geom_line(data = plot_data, aes(x = year, y = auc, color = model_label), linewidth = 4.5, alpha = 0.15) +
+  geom_line(data = plot_data, aes(x = year, y = auc, color = model_label, linetype = "Yearly Trend"), linewidth = 1.8) +
+  
+  geom_point(data = plot_data, aes(x = year, y = auc, fill = model_label), size = 5, shape = 21, stroke = 1.5, color = "white") +
+  
+  geom_text(data = end_points, 
+            aes(label = label_text, x = year + 0.3, y = auc, color = model_label),
+            hjust = 0, family = "montserrat", fontface = "bold", size = 5, lineheight = 0.9) +
+  
+  scale_color_manual(values = c("GLM (Baseline)" = "#95A5A6", "XGBoost (GPU)" = "#D35400", "Convolutional Neural Network" = "#2980B9")) +
+  scale_fill_manual(values = c("GLM (Baseline)" = "#95A5A6", "XGBoost (GPU)" = "#D35400", "Convolutional Neural Network" = "#2980B9")) +
+  scale_linetype_manual(name = NULL, values = c("Yearly Trend" = "solid", "Overall Average" = "dashed")) +
+  
+  scale_y_continuous(limits = c(0.70, 1), breaks = seq(0.70, 1, 0.05), expand = c(0, 0.02)) +
+  scale_x_continuous(breaks = unique(plot_data$year), expand = expansion(mult = c(0.02, 0.22))) +
+  
+  labs(
+    title = "Predictive Trajectory: Expanding Window Validation",
+    subtitle = "Comparing advanced architectures (<b style='color:#D35400;'>XGBoost</b> and <b style='color:#2980B9;'>Neural Networks</b>) against a <b style='color:#95A5A6;'>GLM baseline</b>.",
+    caption = "Validation Strategy: Expanding Window | Metric: Area Under the Curve (AUC)",
+    x = NULL, 
+    y = NULL
+  ) +
+  
+  theme_void(base_family = "montserrat") +
+  theme(
+    plot.margin = margin(40, 40, 40, 40),
+    
+    plot.title = element_text(face = "bold", size = 28, color = "#111111", margin = margin(b = 10)),
+    plot.subtitle = element_markdown(size = 20, color = "#555555", margin = margin(b = 15)),
+    plot.caption = element_text(size = 13, color = "#888888", hjust = 0, margin = margin(t = 30)),
+    
+    axis.text.x = element_text(color = "#555555", size = 15, margin = margin(t = 15)),
+    axis.text.y = element_text(color = "#555555", size = 15, margin = margin(r = 10)),
+    
+    legend.position = "top",
+    legend.justification = "right",
+    legend.text = element_text(size = 16, color = "#333333", face = "bold"),
+    legend.key.width = unit(4, "cm"),
+    legend.margin = margin(b = 20)
+  ) +
+  guides(color = "none", fill = "none")
+
+p_auc
+```
+
+From the graph above, we can see that the model exhibits strong performance, when compared to the GLM baseline. The AUC for both the XGBoost and CNN models are over 0.9 on average, indicating a strong ability to discriminate between months with and without notable fires. The **Convolutional Neural Network** performs the best, having a mean AUC of **0.917**, while the XGBoost model has a mean of **0.901**. Both models performed well above the baseline GLM model, which averaged out at 0.845. 
+
+<h2 class="custom-subsection">
+Beyond AUC
+</h2>
+
+A key thing to note, however, about AUC is its **misleading nature** in cases in which there is a clear class **imbalance**, as is in the case in the wildfire dataset used here. In such cases, a model could achieve a very strong AUC score simply by predicting the majority class (which would be a guess of no notable fire in a given month). To better assess the performance of the model, we also observe the precision recall curves (PR-AUC) for the models, to get a better idea of their performance in predicting the minority class. 
+
+```{r model-trajectory-pr, fig.width=18, fig.height=9, out.width="100%", dpi=300, warning=FALSE, message=FALSE}
+# some weirdness with PR-auc stuff, make sure thsi works 
+
+
+plot_data <- adf %>%
+  pivot_longer(
+    cols = starts_with("prauc_"), 
+    names_to = "model",
+    values_to = "prauc"       
+  ) %>%
+  mutate(model_label = case_when(
+    model == "prauc_glm" ~ "GLM (Baseline)",
+    model == "prauc_xgb" ~ "XGBoost (GPU)",
+    model == "prauc_cnn"  ~ "Convolutional Neural Network"
+  ))
+
+avg_data <- plot_data %>%
+  group_by(model_label) %>%
+  summarise(mean_prauc = mean(prauc, na.rm = TRUE), .groups = "drop")
+
+end_points <- plot_data %>%
+  filter(year == max(year)) %>%
+  left_join(avg_data, by = "model_label") %>%
+  mutate(label_text = sprintf("%s\n(Avg: %.3f)", model_label, mean_prauc))
+
+p_prauc <- ggplot() +
+    geom_hline(yintercept = seq(0.0, 0.35, by = 0.05), color = "#E8EAEF", linewidth = 0.8) +
+  geom_hline(yintercept = 0.0, color = "#2C3E50", linewidth = 1) + 
+  
+  geom_hline(data = avg_data, 
+             aes(yintercept = mean_prauc, color = model_label, linetype = "Overall Average"), 
+             linewidth = 1.2, alpha = 0.7) +
+  
+  geom_line(data = plot_data, aes(x = year, y = prauc, color = model_label), linewidth = 4.5, alpha = 0.15) +
+  geom_line(data = plot_data, aes(x = year, y = prauc, color = model_label, linetype = "Yearly Trend"), linewidth = 1.8) +
+  
+  geom_point(data = plot_data, aes(x = year, y = prauc, fill = model_label), size = 5, shape = 21, stroke = 1.5, color = "white") +
+  
+  geom_text(data = end_points, 
+            aes(label = label_text, x = year + 0.3, y = prauc, color = model_label),
+            hjust = 0, family = "montserrat", fontface = "bold", size = 5, lineheight = 0.9) +
+  
+  scale_color_manual(values = c("GLM (Baseline)" = "#95A5A6", "XGBoost (GPU)" = "#D35400", "Convolutional Neural Network" = "#2980B9")) +
+  scale_fill_manual(values = c("GLM (Baseline)" = "#95A5A6", "XGBoost (GPU)" = "#D35400", "Convolutional Neural Network" = "#2980B9")) +
+  scale_linetype_manual(name = NULL, values = c("Yearly Trend" = "solid", "Overall Average" = "dashed")) +
+  
+  scale_y_continuous(limits = c(0, 0.35), breaks = seq(0, 0.35, 0.05), expand = c(0, 0.02)) +
+  scale_x_continuous(breaks = unique(plot_data$year), expand = expansion(mult = c(0.02, 0.22))) +
+  
+  labs(
+    title = "Predictive Trajectory: Expanding Window Validation",
+    subtitle = "Comparing advanced architectures (<b style='color:#D35400;'>XGBoost</b> and <b style='color:#2980B9;'>Neural Networks</b>) against a <b style='color:#95A5A6;'>GLM baseline</b>.",
+    caption = "Validation Strategy: Expanding Window | Metric: Precision-Recall Area Under the Curve (PR AUC)",
+    x = NULL, 
+    y = NULL
+  ) +
+  
+  # Theme
+  theme_void(base_family = "montserrat") +
+  theme(
+    plot.margin = margin(40, 40, 40, 40),
+    
+    plot.title = element_text(face = "bold", size = 28, color = "#111111", margin = margin(b = 10)),
+    plot.subtitle = element_markdown(size = 20, color = "#555555", margin = margin(b = 15)),
+    plot.caption = element_text(size = 13, color = "#888888", hjust = 0, margin = margin(t = 30)),
+    
+    axis.text.x = element_text(color = "#555555", size = 15, margin = margin(t = 15)),
+    axis.text.y = element_text(color = "#555555", size = 15, margin = margin(r = 10)),
+    
+    legend.position = "top",
+    legend.justification = "right",
+    legend.text = element_text(size = 16, color = "#333333", face = "bold"),
+    legend.key.width = unit(4, "cm"),
+    legend.margin = margin(b = 20)
+  ) +
+  guides(color = "none", fill = "none") 
+
+p_prauc
+```
+
+While the absolute values for the PR-AUC are much lower, due to the class imbalance and the inherent variability of the minority class, the trends are similar to the AUC graph, and the models demonstrate strong performance overall. The CNN model performs the best, achieving a PR-AUC of **0.280**, while the XGBoost model has an average PR-AUC of **0.139**. Lagging behind is the logistic regression model, which has an average PR-AUC of 0.10. 
+
+This gives a far better idea of the **true performance** of the model. Given that the rate of notable fires is slightly under 1%, these PR-AUC scores indicate a far higher ability to predict the **minority class**, demonstrating the capability of the model. Most notable is the **extremely high scores of the CNN model**. This indicates that its grid capture of spatial relationships is a key predictor in performance, which allowed it to separate true underlying relationships instead of relying on predicting the majority class.
+
+<h1 class="custom-section">
+
+SECTION V: Summary
+
+</h1>
+
+In conclusion, this project successfully developed a **robust, spatiotemporal** predictive model capable of proactively assessing wildfire risk across the contiguous United States. By standardizing over 1.88 million records into a 0.5 degree by 0.5 degree grid,integrating high resolution weather and environmental data which covered all areas of covariates related to wildfires, creating a binary outcome result for each month, and introducing lagged variables of key predictors, we created a final model with over 40 features, which includes temporal, spatial, and historical dynamics integral to wildfire prediction.
+
+During our exploratory data analysis, we revealed several key insights integral to future modeling. The class imbalance and high degree of clustering within the data informed key decisions regarding the way incorrect predictions of the minority class should be considered, and the **strong multicollinearity** concerns informed the decision to focus on models with in-built regularization techniques.
+
+To guard against leakage, ensure temporal integrity, and create a robust model, a time-aware validation strategy was used, in which models at year **t** were trained on data from years **1992 to t-1**, and tested on year **t**. This process was repeated across many folds, from 1995 to 2015, the end of the wildfire dataset. More advanced machine learning techniques delivered more impressive results:
+
+-   **Convolutional Neural Network** emerged as the superior model, achieving an outstanding average AUC of **0.917** and a PR-AUC of **0.280**. This indicates that patterns with surrounding land areas is important for prediction of wildfires, and also indicates the strength of the CNN architecture in capturing complex, non-linear relationships in data.
+-   **XGBoost** model delivered strong performance, with an AUC of **0.901** and a PR-AUC of **0.139**. Its tree-based ensemble architecture demonstrated exceptional performance in capturing the complex, non-linear relationships between the predictors and final outcome variable.
+-   The **Logistic Regression (GLM)** baseline yielded a respectable average AUC of **0.845**, but its simplicity ultimately limited it from uncovering more complex interactions in the data. The PR-AUC was **0.1**, which is still significantly stronger than random guessing.
+
+[Ultimately, this project highlights the power of modern machine learning and its applicability to a critical real-world problem. The final Convolutional Neural Network model provides an accurate predictive tool that can analyze local and historical climate profiles to deliver a quantitative assessment of fire risk, providing a powerful resource for fire management and resource allocation strategies.]{style="color: blue;"}}
+
+<h1 class="custom-section">
+
+ACKNOWLEDGEMENTS
+
+</h1>
+
+The following resources were used for data:
+
+<h2 class="custom-subsection">
+
+PRISM Climate Group (2026). PRISM Time Series Spatial Climate Dataset for the Conterminous United States. Oregon State University. Available at: <https://prism.oregonstate.edu>.
+
+Copernicus Climate Change Service (C3S) (2023): ERA5 [Hourly/Monthly] data on single levels from 1940 to present. Copernicus Climate Data Store (CDS). DOI: 10.24381/cds.adbb2d47.
+
+Tatman, Rachael. (2018). 1.88 Million US Wildfires. Version 2. Kaggle. Available at: <https://www.kaggle.com/rtatman/188-million-us-wildfires>.
+
+</h2>
